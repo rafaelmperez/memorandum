@@ -3,23 +3,28 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
   <meta name="description" content="Archivo fotográfico memorial de Herrera. En memoria de los que ya no están.">
   <title>Herrera: Ayer y Hoy · Archivo Memorial</title>
   
+  <!-- Performance: Preconnect -->
+  <link rel="preconnect" href="https://herrerahoy.es" crossorigin>
+  <link rel="dns-prefetch" href="https://herrerahoy.es">
+  
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@300;400;600&family=Inter:wght@300;400;500;600&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap');
 
     :root {
       --bg-dark: #0b0c0f;
-      --bg-panel: rgba(255, 255, 255, 0.03);
-      --text-primary: #f5f5f5;
-      --text-muted: rgba(245, 245, 245, 0.72);
-      --text-subtle: rgba(245, 245, 245, 0.45);
+      --bg-panel: rgba(255, 255, 255, 0.025);
+      --text-primary: rgba(255,255,255,0.92);
+      --text-muted: rgba(255,255,255,0.70);
+      --text-subtle: rgba(255,255,255,0.46);
       
       /* Oro latón envejecido */
-      --accent: #c7a24b;
-      --accent-soft: rgba(199, 162, 75, 0.18);
-      --accent-border: rgba(199, 162, 75, 0.35);
+      --accent: #b8943a;
+      --accent-soft: rgba(184, 148, 58, 0.14);
+      --accent-border: rgba(184, 148, 58, 0.28);
       
       /* Strokes institucionales */
       --stroke: rgba(255, 255, 255, 0.10);
@@ -39,6 +44,17 @@
       box-sizing: border-box;
     }
 
+    /* Antialias y kerning serio + características OpenType */
+    html {
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+      font-synthesis-weight: none;
+      font-variant-ligatures: common-ligatures;
+      font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
+    }
+
     body {
       font-family: 'Inter', sans-serif;
       background: var(--bg-dark);
@@ -46,6 +62,7 @@
       overflow-x: hidden;
       line-height: 1.6;
       position: relative;
+      font-feature-settings: "kern" 1, "liga" 1;
     }
 
     /* Grano + viñeta sutil */
@@ -58,51 +75,86 @@
         radial-gradient(1200px 600px at 50% 10%, rgba(199, 162, 75, 0.10), transparent 60%),
         radial-gradient(900px 500px at 50% 80%, rgba(255, 255, 255, 0.04), transparent 60%),
         radial-gradient(circle at 50% 50%, transparent 55%, rgba(0, 0, 0, 0.55) 100%);
-      mix-blend-mode: screen;
-      opacity: 0.55;
+      mix-blend-mode: normal;
+      opacity: 0.42;
       z-index: 0;
     }
 
+    /* Textura papel/placa museo */
     body::after {
       content: "";
       position: fixed;
       inset: 0;
       pointer-events: none;
       background-image:
-        repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.015), rgba(255, 255, 255, 0.015) 1px, transparent 1px, transparent 3px);
-      opacity: 0.12;
+        repeating-linear-gradient(0deg, rgba(255,255,255,0.012), rgba(255,255,255,0.012) 1px, transparent 1px, transparent 4px),
+        radial-gradient(circle at 30% 20%, rgba(184,148,58,0.04), transparent 40%),
+        radial-gradient(circle at 70% 80%, rgba(255,255,255,0.03), transparent 45%);
+      opacity: 0.05;
       z-index: 0;
     }
-
-    /* Header Memorial */
+    
+    /* Skip link (accesibilidad pro) */
+    .skip-link {
+      position: absolute;
+      left: -999px;
+      top: 12px;
+      padding: 10px 12px;
+      background: rgba(0,0,0,0.85);
+      border: 1px solid var(--accent-border);
+      color: var(--text-primary);
+      z-index: 999999;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      font-size: 12px;
+      text-decoration: none;
+    }
+    .skip-link:focus { 
+      left: 12px; 
+      outline: none; 
+    }
+    
+    /* PORTADA: institucional museo */
     .memorial-header {
-      min-height: 100vh;
+      min-height: 92vh;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       text-align: center;
-      padding: 40px 20px;
+      padding: 64px 18px 54px;
       position: relative;
       z-index: 1;
     }
 
     .memorial-badge {
-      width: 80px;
-      height: 80px;
+      width: auto;
+      max-width: 500px;
+      height: auto;
       border-radius: 0;
-      border: 2px solid var(--accent);
+      border: none;
       display: flex;
       align-items: center;
       justify-content: center;
-      margin-bottom: 30px;
-      background: var(--accent-soft);
+      margin-bottom: 26px;
+      background: transparent;
     }
 
-    .memorial-badge svg {
-      width: 40px;
-      height: 40px;
-      fill: var(--accent);
+    .memorial-image {
+      width: 100%;
+      max-width: 240px;
+      height: auto;
+      display: block;
+      margin: 0 auto;
+      border-radius: 0;
+      box-shadow: 0 24px 90px rgba(0,0,0,0.62);
+      filter: contrast(1.02) saturate(0.98);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .memorial-image:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 28px 100px rgba(0,0,0,0.7);
     }
 
     /* Placa institucional */
@@ -111,15 +163,18 @@
       gap: 14px;
       align-items: center;
       padding: 10px 14px;
-      border: 1px solid var(--stroke);
-      background: rgba(0, 0, 0, 0.35);
+      border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(8,8,10,0.58);
       backdrop-filter: blur(10px);
       margin-bottom: 18px;
-      letter-spacing: 0.12em;
+      letter-spacing: 0.14em;
       text-transform: uppercase;
-      font-size: 11px;
+      font-size: 10.5px;
       color: var(--text-muted);
       border-radius: 0;
+      box-shadow: 0 18px 60px rgba(0,0,0,0.45);
+      font-weight: 500;
+      font-feature-settings: "tnum" 1, "case" 1;
     }
 
     .memorial-plaque b {
@@ -128,31 +183,52 @@
     }
 
     .memorial-title {
-      font-family: 'Crimson Pro', serif;
-      font-size: clamp(32px, 6vw, 64px);
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(36px, 7vw, 72px);
       font-weight: 300;
-      letter-spacing: 2px;
-      margin-bottom: 16px;
+      letter-spacing: 0.04em;
+      line-height: 1.12;
+      margin-bottom: 10px;
       color: var(--text-primary);
+      font-optical-sizing: auto;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.4);
+      font-feature-settings: "kern" 1, "liga" 1, "dlig" 1, "swsh" 1;
+    }
+
+    /* Regla institucional bajo el título */
+    .memorial-title::after {
+      content: "";
+      display: block;
+      width: 110px;
+      height: 1px;
+      background: rgba(184,148,58,0.55);
+      margin: 18px auto 0;
+      opacity: 0.85;
     }
 
     .memorial-subtitle {
-      font-family: 'Crimson Pro', serif;
-      font-size: clamp(18px, 3vw, 28px);
-      font-weight: 300;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(18px, 2.8vw, 26px);
+      font-weight: 400;
       font-style: italic;
       color: var(--accent);
       margin-bottom: 40px;
-      letter-spacing: 1px;
+      letter-spacing: 0.03em;
+      text-transform: none;
+      opacity: 0.95;
+      font-feature-settings: "kern" 1, "liga" 1, "swsh" 1;
     }
 
     .memorial-intro {
-      max-width: var(--reading);
-      font-size: 16px;
-      line-height: 1.8;
-      color: var(--text-muted);
+      max-width: 66ch;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 17px;
+      line-height: 2.0;
+      color: rgba(255,255,255,0.72);
       margin-bottom: 50px;
-      font-weight: 300;
+      font-weight: 400;
+      letter-spacing: 0.015em;
+      font-feature-settings: "kern" 1, "liga" 1;
     }
 
     .scroll-indicator {
@@ -169,10 +245,12 @@
     }
 
     .scroll-indicator span {
-      font-size: 12px;
+      font-size: 10.5px;
       text-transform: uppercase;
-      letter-spacing: 2px;
+      letter-spacing: 0.20em;
       color: var(--text-subtle);
+      font-weight: 600;
+      font-feature-settings: "case" 1;
     }
 
     .scroll-arrow {
@@ -196,8 +274,8 @@
       z-index: 9999;
       width: 56px;
       height: 56px;
-      background: var(--accent-soft);
-      border: 1px solid var(--accent);
+      background: rgba(0,0,0,0.35);
+      border: 1px solid rgba(184,148,58,0.30);
       border-radius: 0;
       display: flex;
       align-items: center;
@@ -208,8 +286,7 @@
     }
 
     .music-control:hover {
-      background: rgba(199, 162, 75, 0.3);
-      transform: scale(1.05);
+      background: rgba(184,148,58,0.12);
     }
 
     .music-control svg {
@@ -227,241 +304,300 @@
       50% { box-shadow: 0 0 0 10px rgba(199, 162, 75, 0); }
     }
 
-/* Gallery Section */
-.gallery-section {
-  padding: 100px 20px;
-  max-width: 1400px;  /* ← Ampliado de 1200px */
-  margin: 0 auto;
-  position: relative;
-  z-index: 1;
-}
+    /* Gallery Section */
+    .gallery-section {
+      padding: 100px 20px;
+      max-width: 1400px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
 
-.section-header {
-  text-align: center;
-  margin-bottom: 60px;
-}
+    .section-header {
+      text-align: center;
+      margin-bottom: 60px;
+    }
 
-.section-header h2 {
-  font-family: 'Crimson Pro', serif;
-  font-size: clamp(28px, 4vw, 48px);
-  font-weight: 300;
-  margin-bottom: 16px;
-  letter-spacing: 1px;
-}
+    .section-header h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(32px, 5vw, 56px);
+      font-weight: 400;
+      margin-bottom: 16px;
+      letter-spacing: 0.02em;
+      font-feature-settings: "kern" 1, "liga" 1, "dlig" 1;
+    }
 
-.section-header p {
-  color: var(--text-muted);
-  font-size: 15px;
-  max-width: 600px;
-  margin: 0 auto;
-  font-weight: 300;
-}
+    .section-header p {
+      font-family: 'Cormorant Garamond', serif;
+      color: var(--text-muted);
+      font-size: 16px;
+      max-width: 600px;
+      margin: 0 auto;
+      font-weight: 400;
+      font-style: italic;
+      letter-spacing: 0.01em;
+      line-height: 1.7;
+    }
 
-/* Photo Card - estilo museo */
-.photo-card {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.015));
-  border: 1px solid var(--stroke);
-  border-radius: 0;
-  overflow: hidden;
-  margin-bottom: 50px;
-  transition: all 0.4s ease;
-  max-width: 1100px;  /* ← AMPLIADO de 900px a 1100px */
-  margin-left: auto;
-  margin-right: auto;
-}
+    /* Photo Card - estilo museo */
+    .photo-card {
+      background: linear-gradient(180deg, rgba(255,255,255,0.026), rgba(255,255,255,0.012));
+      border: 1px solid rgba(255,255,255,0.075);
+      border-radius: 0;
+      overflow: hidden;
+      margin-bottom: 50px;
+      transition: all 0.4s ease;
+      max-width: 1100px;
+      margin-left: auto;
+      margin-right: auto;
+      box-shadow: 0 18px 70px rgba(0,0,0,0.35);
+      position: relative;
+    }
 
-.photo-card:hover {
-  border-color: var(--accent-border);
-  box-shadow: var(--shadow);
-}
+    /* Doble línea institucional */
+    .photo-card::before {
+      content: "";
+      position: absolute;
+      inset: 10px;
+      border: 1px solid rgba(255,255,255,0.035);
+      pointer-events: none;
+      z-index: 1;
+    }
 
-.comparison-container {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 4/3;
-  overflow: hidden;
-  background: #000;
-  max-height: 700px;  /* ← AMPLIADO de 550px a 700px */
-}
+    .photo-card:hover {
+      border-color: rgba(184,148,58,0.24);
+      box-shadow: 0 22px 90px rgba(0,0,0,0.46);
+      transform: none;
+    }
 
-.comparison-image {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  object-position: center;
-}
+    .comparison-container {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 4/3;
+      overflow: hidden;
+      background: #050506;
+      max-height: 700px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
 
-.comparison-image.after {
-  clip-path: inset(0 50% 0 0);
-}
+    /* Marco interno tipo vitrina */
+    .comparison-container::after {
+      content: "";
+      position: absolute;
+      inset: 14px;
+      border: 1px solid rgba(255,255,255,0.035);
+      pointer-events: none;
+      z-index: 2;
+    }
 
-/* Slider élite */
-.comparison-slider {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  width: 2px;
-  height: 100%;
-  background: linear-gradient(to bottom, transparent, var(--accent), transparent);
-  cursor: ew-resize;
-  z-index: 10;
-  transform: translateX(-50%);
-}
+    .comparison-image {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      object-position: center;
+    }
 
-.comparison-slider:focus {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
-}
+    .comparison-image.after {
+      clip-path: inset(0 50% 0 0);
+    }
 
-.comparison-handle {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 44px;
-  height: 44px;
-  background: rgba(199, 162, 75, 0.92);
-  border-radius: 999px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.55);
-  outline: 1px solid rgba(0, 0, 0, 0.25);
-}
+    /* Slider élite */
+    .comparison-slider {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      width: 3px;
+      height: 100%;
+      background: linear-gradient(to bottom, transparent, rgba(184,148,58,0.95), transparent);
+      cursor: ew-resize;
+      z-index: 10;
+      transform: translateX(-50%);
+      box-shadow: 0 0 0 1px rgba(0,0,0,0.45);
+    }
 
-.comparison-handle svg {
-  width: 24px;
-  height: 24px;
-  fill: var(--bg-dark);
-}
+    .comparison-slider:focus {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
 
-.comparison-labels {
-  position: absolute;
-  top: 20px;
-  left: 0;
-  right: 0;
-  display: flex;
-  justify-content: space-between;
-  padding: 0 20px;
-  z-index: 5;
-  pointer-events: none;
-}
+    .comparison-handle {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 52px;
+      height: 38px;
+      background: rgba(184,148,58,0.95);
+      border-radius: 2px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 16px 40px rgba(0,0,0,0.6);
+      outline: 1px solid rgba(0,0,0,0.35);
+    }
 
-.comparison-label {
-  background: rgba(0, 0, 0, 0.55);
-  backdrop-filter: blur(10px);
-  padding: 8px 16px;
-  font-size: 12px;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  font-weight: 500;
-  border-radius: 0;
-  border: 1px solid var(--stroke-strong);
-}
+    .comparison-handle svg {
+      width: 24px;
+      height: 24px;
+      fill: var(--bg-dark);
+    }
 
-.comparison-label.ayer {
-  color: var(--accent);
-}
+    .comparison-labels {
+      position: absolute;
+      top: 20px;
+      left: 0;
+      right: 0;
+      display: flex;
+      justify-content: space-between;
+      padding: 0 20px;
+      z-index: 5;
+      pointer-events: none;
+    }
 
-.comparison-label.hoy {
-  color: #fff;
-}
+    .comparison-label {
+      background: rgba(0,0,0,0.60);
+      backdrop-filter: blur(10px);
+      padding: 8px 16px;
+      font-size: 10.5px;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      font-weight: 600;
+      border-radius: 0;
+      border: 1px solid rgba(255,255,255,0.10);
+      font-feature-settings: "tnum" 1, "case" 1;
+    }
 
-/* Info élite */
-.photo-info {
-  padding: 30px;
-  background: rgba(255, 255, 255, 0.01);
-}
+    .comparison-label.ayer {
+      color: var(--accent);
+    }
 
-.photo-year {
-  color: var(--accent);
-  font-size: 14px;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  margin-bottom: 12px;
-}
+    .comparison-label.hoy {
+      color: #fff;
+    }
 
-.photo-title {
-  font-family: 'Crimson Pro', serif;
-  font-size: 24px;
-  font-weight: 400;
-  margin-bottom: 12px;
-  color: var(--text-primary);
-}
+    /* Caption tipo museo */
+    .comparison-caption {
+      position: absolute;
+      left: 18px;
+      bottom: 16px;
+      background: rgba(0,0,0,0.62);
+      border: 1px solid rgba(255,255,255,0.08);
+      padding: 10px 12px;
+      font-size: 10px;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.70);
+      z-index: 4;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+      font-weight: 600;
+      font-feature-settings: "case" 1;
+    }
 
-.photo-description {
-  color: var(--text-muted);
-  font-size: 15px;
-  line-height: 1.7;
-  margin-bottom: 16px;
-  font-weight: 300;
-}
+    .comparison-caption.hidden {
+      opacity: 0;
+    }
 
-.photo-people {
-  font-size: 13px;
-  color: var(--text-muted);
-  font-style: italic;
-  padding-top: 16px;
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
-}
+    /* Info élite */
+    .photo-info {
+      padding: 34px 34px 30px;
+      background: rgba(255, 255, 255, 0.01);
+    }
 
-/* Metadatos archivo */
-.photo-meta {
-  margin-top: 18px;
-  padding-top: 16px;
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px 18px;
-  color: var(--text-muted);
-  font-size: 13px;
-}
+    /* Código de catálogo profesional */
+    .catalog-code {
+      display: inline-block;
+      font-family: 'SF Mono', 'Monaco', 'Consolas', 'Courier New', monospace;
+      font-size: 10.5px;
+      letter-spacing: 0.16em;
+      color: var(--accent);
+      background: rgba(184,148,58,0.06);
+      padding: 5px 9px;
+      border: 1px solid rgba(184,148,58,0.22);
+      margin-bottom: 8px;
+      font-weight: 500;
+      font-feature-settings: "tnum" 1;
+    }
 
-.photo-meta span {
-  color: var(--text-subtle);
-}
+    .photo-year {
+      color: var(--accent);
+      font-size: 11.5px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.20em;
+      margin-top: 10px;
+      margin-bottom: 12px;
+      opacity: 0.95;
+      font-feature-settings: "tnum" 1, "case" 1;
+    }
 
-/* Responsive móvil */
-@media (max-width: 768px) {
-  .gallery-section {
-    padding: 60px 16px;
-  }
+    .photo-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 30px;
+      font-weight: 500;
+      margin-bottom: 14px;
+      color: var(--text-primary);
+      letter-spacing: 0.01em;
+      line-height: 1.3;
+      font-feature-settings: "kern" 1, "liga" 1, "dlig" 1;
+    }
 
-  .section-header {
-    margin-bottom: 40px;
-  }
+    /* Regla bajo título como ficha de museo */
+    .photo-title::after {
+      content: "";
+      display: block;
+      width: 80px;
+      height: 1px;
+      background: rgba(255,255,255,0.08);
+      margin-top: 14px;
+    }
 
-  .photo-card {
-    margin-bottom: 40px;
-  }
+    .photo-description {
+      font-family: 'Cormorant Garamond', serif;
+      color: rgba(255,255,255,0.74);
+      font-size: 16.5px;
+      line-height: 1.9;
+      margin-bottom: 16px;
+      font-weight: 400;
+      letter-spacing: 0.012em;
+      font-feature-settings: "kern" 1, "liga" 1;
+    }
 
-  .comparison-container {
-    aspect-ratio: 1/1;
-    max-height: 500px;  /* ← AMPLIADO de 400px a 500px en móvil */
-  }
+    .photo-people {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 14px;
+      color: rgba(255,255,255,0.66);
+      font-style: italic;
+      padding-top: 16px;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      line-height: 1.7;
+      letter-spacing: 0.01em;
+      font-weight: 400;
+    }
 
-  .photo-info {
-    padding: 20px;
-  }
+    /* Metadatos archivo */
+    .photo-meta {
+      margin-top: 18px;
+      padding-top: 16px;
+      border-top: 1px solid rgba(255,255,255,0.045);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px 18px;
+      color: var(--text-muted);
+      font-size: 13px;
+      font-weight: 400;
+      letter-spacing: 0.008em;
+      line-height: 1.6;
+      font-feature-settings: "tnum" 1;
+    }
 
-  .photo-meta {
-    grid-template-columns: 1fr;
-    gap: 10px;
-  }
+    .photo-meta span {
+      color: rgba(255,255,255,0.42);
+    }
 
-  .comparison-labels {
-    padding: 0 12px;
-  }
-
-  .comparison-label {
-    font-size: 10px;
-    padding: 6px 12px;
-  }
-}
     /* Botones élite */
     .photo-actions {
       margin-top: 18px;
@@ -471,32 +607,33 @@
     }
 
     .btn-elite {
-      border: 1px solid var(--stroke);
-      background: rgba(0, 0, 0, 0.35);
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(0,0,0,0.42);
       color: rgba(245, 245, 245, 0.85);
       padding: 10px 14px;
-      font-size: 12px;
-      letter-spacing: 0.10em;
+      font-size: 11px;
+      letter-spacing: 0.16em;
       text-transform: uppercase;
       cursor: pointer;
       transition: all 0.2s ease;
       backdrop-filter: blur(10px);
       border-radius: 0;
       font-family: 'Inter', sans-serif;
-      font-weight: 500;
+      font-weight: 600;
+      font-feature-settings: "case" 1;
     }
 
     .btn-elite:hover {
-      border-color: var(--accent-border);
-      transform: translateY(-1px);
-      background: rgba(199, 162, 75, 0.1);
+      background: rgba(184,148,58,0.08);
+      border-color: rgba(184,148,58,0.22);
+      transform: none;
     }
 
     /* Modal */
     .modal {
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.95);
+      background: rgba(0,0,0,0.94);
       backdrop-filter: blur(20px);
       z-index: 99999;
       display: none;
@@ -525,8 +662,9 @@
       max-width: 100%;
       max-height: 80vh;
       object-fit: contain;
-      border: 1px solid var(--stroke);
+      border: 1px solid rgba(255,255,255,0.08);
       border-radius: 0;
+      box-shadow: 0 24px 90px rgba(0,0,0,0.75);
     }
 
     .modal-info {
@@ -575,10 +713,12 @@
     }
 
     .correction-form h3 {
-      font-family: 'Crimson Pro', serif;
-      font-size: 20px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 24px;
       margin-bottom: 16px;
       color: var(--accent);
+      font-weight: 500;
+      letter-spacing: 0.01em;
     }
 
     .form-group {
@@ -587,11 +727,13 @@
 
     .form-group label {
       display: block;
-      font-size: 13px;
+      font-size: 11.5px;
       color: var(--text-muted);
       margin-bottom: 6px;
       text-transform: uppercase;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.14em;
+      font-weight: 600;
+      font-feature-settings: "case" 1;
     }
 
     .form-group input,
@@ -634,11 +776,13 @@
     }
 
     .memorial-footer-text {
-      font-family: 'Crimson Pro', serif;
-      font-size: 18px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 20px;
       font-style: italic;
       color: var(--text-muted);
       margin-bottom: 20px;
+      font-weight: 400;
+      letter-spacing: 0.01em;
     }
 
     .memorial-heart {
@@ -686,6 +830,12 @@
       to { transform: rotate(360deg); }
     }
 
+    /* Foco accesible bonito */
+    :focus-visible {
+      outline: 2px solid rgba(184,148,58,0.75);
+      outline-offset: 3px;
+    }
+
     /* Responsive */
     @media (max-width: 768px) {
       .memorial-header {
@@ -693,12 +843,25 @@
         padding: 40px 20px;
       }
 
+      .memorial-image {
+        max-width: 380px;
+      }
+
       .gallery-section {
         padding: 60px 16px;
       }
 
+      .section-header {
+        margin-bottom: 40px;
+      }
+
       .photo-card {
         margin-bottom: 40px;
+      }
+
+      .comparison-container {
+        aspect-ratio: 1/1;
+        max-height: 500px;
       }
 
       .photo-info {
@@ -714,6 +877,11 @@
         padding: 0 12px;
       }
 
+      .comparison-label {
+        font-size: 10px;
+        padding: 6px 12px;
+      }
+
       .music-control {
         bottom: 20px;
         right: 20px;
@@ -724,6 +892,12 @@
       .modal-close {
         top: 10px;
         right: 10px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .memorial-image {
+        max-width: 280px;
       }
     }
 
@@ -738,20 +912,13 @@
         scroll-behavior: auto !important;
       }
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
 
   </style>
 </head>
 <body>
+
+  <!-- Skip link accesibilidad -->
+  <a class="skip-link" href="#galeria">Saltar a la galería</a>
 
   <!-- Loading -->
   <div class="loading-overlay" id="loading">
@@ -789,14 +956,9 @@
   <!-- Header Memorial -->
   <section class="memorial-header">
     <div class="memorial-badge">
-      <svg viewBox="0 0 24 24">
-        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-      </svg>
+      <img src="https://herrerahoy.es/img/memorandum/ayeryhoybanner.webp" alt="Herrera Ayer y Hoy" class="memorial-image">
     </div>
 
-    <div class="memorial-plaque">
-      <b>Archivo</b> · Colección "Herrera" · Ayer y Hoy
-    </div>
     
     <h1 class="memorial-title">Herrera: Ayer y Hoy</h1>
     <p class="memorial-subtitle">En memoria de los que ya no están</p>
@@ -811,7 +973,6 @@
         A través de estas imágenes, recordamos lo que fuimos y celebramos lo que somos.
       </p>
     </div>
-
     <div class="scroll-indicator">
       <span>Descubre</span>
       <div class="scroll-arrow"></div>
@@ -819,7 +980,7 @@
   </section>
 
   <!-- Gallery Section -->
-  <section class="gallery-section">
+  <section class="gallery-section" id="galeria">
     <div class="section-header">
       <h2>Memoria Fotográfica</h2>
       <p>Desliza el control en cada imagen para viajar en el tiempo · Usa ← → para navegar · Doble click para resetear</p>
@@ -830,22 +991,22 @@
   <div class="comparison-container" data-comparison>
     <img 
       src="https://herrerahoy.es/img/memorandum/DSC06221i.webp" 
-      alt="Iglesia de Santa María Magdalena - Ayer" 
+      alt="Iglesia de Santiago el Mayor - Ayer" 
       class="comparison-image before"
       loading="eager"
-      data-title="Iglesia de Santa María Magdalena"
-      data-year="Años 50 - 2024"
+      data-title="Iglesia de Santiago el Mayor"
+      data-year="Años 30 - 2024"
       data-desc="Testigo silencioso de generaciones. Aquí se bautizaron nuestros abuelos, se casaron nuestros padres, y despedimos a los que se fueron. Sus campanas han marcado el tiempo de Herrera desde hace siglos."
     >
     <img 
       src="https://herrerahoy.es/img/memorandum/5%20a.webp" 
-      alt="Iglesia de Santa María Magdalena - Hoy" 
+      alt="Iglesia de Santiago el Mayor - Hoy" 
       class="comparison-image after"
       loading="eager"
     >
-    <div class="comparison-slider">
+    <div class="comparison-slider" role="slider" aria-label="Comparador antes y después" tabindex="0">
       <div class="comparison-handle">
-        <svg viewBox="0 0 24 24">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
           <path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.41z"/>
           <path d="M8.59 16.59L4 12l4.59-4.59L10 6l-6 6 6 6-1.41 1.41z" transform="translate(10, 0)"/>
         </svg>
@@ -855,8 +1016,10 @@
       <span class="comparison-label ayer">Ayer · Años 30</span>
       <span class="comparison-label hoy">Hoy · 2026</span>
     </div>
+    <div class="comparison-caption">Desliza para comparar</div>
   </div>
   <div class="photo-info">
+    <span class="catalog-code">HH-MEM-0001</span>
     <div class="photo-year">Años 30 - 2024</div>
     <h3 class="photo-title">Iglesia de Santiago el Mayor</h3>
     <p class="photo-description">
@@ -873,6 +1036,8 @@
       <div><span>Fecha aprox.:</span> Años 1930</div>
       <div><span>Fuente:</span> Archivo familiar</div>
       <div><span>Patrimonio:</span> Bien de Interés Cultural</div>
+      <div><span>Conservación:</span> Buena</div>
+      <div><span>Procedencia:</span> Colección particular</div>
     </div>
 
     <div class="photo-actions">
@@ -901,27 +1066,26 @@
   </div>
 </div>
 
-
-<!-- FOTO 2 - CALLE TENIENTE MUÑOZ OLIVÉ (AYER/HOY) -->
+<!-- FOTO 2 - CALLE TENIENTE MUÑOZ OLIVÉ -->
 <div class="photo-card">
   <div class="comparison-container" data-comparison>
     <img 
       src="https://herrerahoy.es/img/memorandum/munozolive.webp" 
-      alt="Calle del Capitán Manuel Muñoz Olivé (1914) - Ayer" 
+      alt="Calle Teniente Muñoz Olivé - Ayer" 
       class="comparison-image before"
-      loading="eager"
+      loading="lazy"
       data-title="Calle Teniente Muñoz Olivé"
-      data-year="1914–1917 · Hoy"
-      data-desc="Calle del Capitán Manuel Muñoz Olivé (1914). En 1917 aparece como Calle Teniente Muñoz Olivé. El heroico militar que da nombre a la calle, muerto en el Rif el año 1911, pasó su infancia en la casa, donde se inscribió una lápida recordatoria. En la parte derecha despunta el campanario de la iglesia de Santiago el Mayor."
+      data-year="1914–1917 · 2026"
+      data-desc="Calle del Capitán Manuel Muñoz Olivé (1914). En 1917 aparece como Calle Teniente Muñoz Olivé. El heroico militar que da nombre a la calle, muerto en el Rif el año 1911, pasó su infancia en la casa, donde se inscribió una lápida recordatoria."
     >
     <img 
       src="https://herrerahoy.es/img/memorandum/munozolivehoy.webp" 
       alt="Calle Teniente Muñoz Olivé - Hoy" 
       class="comparison-image after"
-      loading="eager"
+      loading="lazy"
     >
 
-    <div class="comparison-slider">
+    <div class="comparison-slider" role="slider" aria-label="Comparador antes y después" tabindex="0">
       <div class="comparison-handle">
         <svg viewBox="0 0 24 24" aria-hidden="true">
           <path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.41z"/>
@@ -934,9 +1098,11 @@
       <span class="comparison-label ayer">Ayer · 1914</span>
       <span class="comparison-label hoy">Hoy · 2026</span>
     </div>
+    <div class="comparison-caption">Desliza para comparar</div>
   </div>
 
   <div class="photo-info">
+    <span class="catalog-code">HH-MEM-0002</span>
     <div class="photo-year">1914–1917 · 2026</div>
     <h3 class="photo-title">Calle Teniente Muñoz Olivé</h3>
 
@@ -956,6 +1122,8 @@
       <div><span>Denominación (1914):</span> Calle del Capitán Manuel Muñoz Olivé</div>
       <div><span>Referencia (1917):</span> Calle Teniente Muñoz Olivé</div>
       <div><span>Detalle visible:</span> Campanario de Santiago el Mayor</div>
+      <div><span>Conservación:</span> Excelente</div>
+      <div><span>Procedencia:</span> Archivo histórico municipal</div>
     </div>
 
     <div class="photo-actions">
@@ -984,32 +1152,28 @@
   </div>
 </div>
 
-
-
-
-
-<!-- FOTO 3 - PLAZA (AÑOS 50 vs HOY) -->
+<!-- FOTO 3 - CALLE BLAS INFANTE -->
 <div class="photo-card">
   <div class="comparison-container" data-comparison>
     <img 
       src="https://herrerahoy.es/img/memorandum/00179973.webp" 
-      alt="Plaza del Pueblo - Ayer (años 50)" 
+      alt="Calle Blas Infante - Ayer" 
       class="comparison-image before"
-      loading="eager"
-      data-title="Plaza del Pueblo"
+      loading="lazy"
+      data-title="Calle Blas Infante"
       data-year="Años 50 - 2026"
-      data-desc="La Plaza, punto de encuentro de generaciones. Aquí se cruzaban miradas, se celebraban fiestas y se hacía vida sin prisa. Cambian fachadas y comercios, pero la plaza sigue siendo el centro emocional del pueblo."
+      data-desc="La calle Blas Infante ha sido siempre un lugar donde todo empieza por las mañanas: café, encuentros, fiestas, conversaciones al fresco y días de mercado."
     >
     <img 
       src="https://herrerahoy.es/img/memorandum/plazahoy.webp" 
-      alt="Plaza del Pueblo - Hoy (2026)" 
+      alt="Calle Blas Infante - Hoy" 
       class="comparison-image after"
-      loading="eager"
+      loading="lazy"
     >
 
-    <div class="comparison-slider">
+    <div class="comparison-slider" role="slider" aria-label="Comparador antes y después" tabindex="0">
       <div class="comparison-handle">
-        <svg viewBox="0 0 24 24">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
           <path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.41z"/>
           <path d="M8.59 16.59L4 12l4.59-4.59L10 6l-6 6 6 6-1.41 1.41z" transform="translate(10, 0)"/>
         </svg>
@@ -1020,9 +1184,11 @@
       <span class="comparison-label ayer">Ayer · Años 50</span>
       <span class="comparison-label hoy">Hoy · 2026</span>
     </div>
+    <div class="comparison-caption">Desliza para comparar</div>
   </div>
 
   <div class="photo-info">
+    <span class="catalog-code">HH-MEM-0003</span>
     <div class="photo-year">Años 50 - 2026</div>
     <h3 class="photo-title">Calle Blas Infante</h3>
     <p class="photo-description">
@@ -1040,6 +1206,8 @@
       <div><span>Fecha aprox.:</span> Años 1950</div>
       <div><span>Fuente:</span> Archivo histórico</div>
       <div><span>Estado:</span> Centro urbano</div>
+      <div><span>Conservación:</span> Buena</div>
+      <div><span>Procedencia:</span> Colección municipal</div>
     </div>
 
     <div class="photo-actions">
@@ -1068,26 +1236,26 @@
   </div>
 </div>
 
-<!-- FOTO - ERMITA DE NUESTRA SEÑORA DE LA CONCEPCIÓN (AYER/HOY) -->
+<!-- FOTO 4 - ERMITA DE NUESTRA SEÑORA DE LA CONCEPCIÓN -->
 <div class="photo-card">
   <div class="comparison-container" data-comparison>
     <img 
       src="https://herrerahoy.es/img/memorandum/3-b.webp" 
       alt="Ermita de Nuestra Señora de la Concepción - Ayer" 
       class="comparison-image before"
-      loading="eager"
+      loading="lazy"
       data-title="Ermita de Nuestra Señora de la Concepción"
-      data-year="Siglo XX · Hoy"
+      data-year="Siglo XX · 2026"
       data-desc="Uno de los rincones más queridos de Herrera. La Ermita de Nuestra Señora de la Concepción ha acompañado generaciones de vecinos, siendo punto de encuentro, tradición y devoción popular."
     >
     <img 
       src="https://herrerahoy.es/img/memorandum/Captura-de-pantalla-2026-02-07-032518.webp" 
       alt="Ermita de Nuestra Señora de la Concepción - Hoy" 
       class="comparison-image after"
-      loading="eager"
+      loading="lazy"
     >
 
-    <div class="comparison-slider">
+    <div class="comparison-slider" role="slider" aria-label="Comparador antes y después" tabindex="0">
       <div class="comparison-handle">
         <svg viewBox="0 0 24 24" aria-hidden="true">
           <path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.41z"/>
@@ -1100,9 +1268,11 @@
       <span class="comparison-label ayer">Ayer · Siglo XX</span>
       <span class="comparison-label hoy">Hoy · 2026</span>
     </div>
+    <div class="comparison-caption">Desliza para comparar</div>
   </div>
 
   <div class="photo-info">
+    <span class="catalog-code">HH-MEM-0004</span>
     <div class="photo-year">Siglo XX · 2026</div>
     <h3 class="photo-title">Ermita de Nuestra Señora de la Concepción</h3>
 
@@ -1121,6 +1291,8 @@
       <div><span>Periodo imagen antigua:</span> Siglo XX</div>
       <div><span>Patrimonio local:</span> Tradición religiosa y cultural</div>
       <div><span>Serie:</span> Memorándum · Ayer y Hoy</div>
+      <div><span>Conservación:</span> Buena</div>
+      <div><span>Procedencia:</span> Archivo parroquial</div>
     </div>
 
     <div class="photo-actions">
@@ -1149,56 +1321,58 @@
   </div>
 </div>
 
-
-
-<!-- FOTO 3 -->
+<!-- FOTO 5 - CASA CUARTEL DE LA GUARDIA CIVIL -->
 <div class="photo-card">
   <div class="comparison-container" data-comparison>
     <img 
       src="https://herrerahoy.es/img/memorandum/cuartelantiguo.webp" 
-      alt="Iglesia de Santa María Magdalena - Ayer" 
+      alt="Casa Cuartel de la Guardia Civil - Ayer" 
       class="comparison-image before"
-      loading="eager"
-      data-title="Iglesia de Santa María Magdalena"
-      data-year="Años 50 - 2024"
-      data-desc="Testigo silencioso de generaciones. Aquí se bautizaron nuestros abuelos, se casaron nuestros padres, y despedimos a los que se fueron. Sus campanas han marcado el tiempo de Herrera desde hace siglos."
+      loading="lazy"
+      data-title="Casa Cuartel de la Guardia Civil"
+      data-year="Años 40 - 2024"
+      data-desc="Edificio emblemático que albergó durante décadas a la Guardia Civil de Herrera. Símbolo de autoridad y orden público, esta construcción fue parte fundamental del entramado institucional del pueblo."
     >
     <img 
       src="https://herrerahoy.es/img/memorandum/casacuartelhoy.webp" 
-      alt="Iglesia de Santa María Magdalena - Hoy" 
+      alt="Casa Cuartel de la Guardia Civil - Hoy" 
       class="comparison-image after"
-      loading="eager"
+      loading="lazy"
     >
-    <div class="comparison-slider">
+    <div class="comparison-slider" role="slider" aria-label="Comparador antes y después" tabindex="0">
       <div class="comparison-handle">
-        <svg viewBox="0 0 24 24">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
           <path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.41z"/>
           <path d="M8.59 16.59L4 12l4.59-4.59L10 6l-6 6 6 6-1.41 1.41z" transform="translate(10, 0)"/>
         </svg>
       </div>
     </div>
     <div class="comparison-labels">
-      <span class="comparison-label ayer">Hoy · 2026</span>
-      <span class="comparison-label hoy">Ayer · Años 30</span>
+      <span class="comparison-label ayer">Ayer · Años 40</span>
+      <span class="comparison-label hoy">Hoy · 2024</span>
     </div>
+    <div class="comparison-caption">Desliza para comparar</div>
   </div>
   <div class="photo-info">
-    <div class="photo-year">Años 30 - 2024</div>
-    <h3 class="photo-title">Iglesia de Santiago el Mayor</h3>
+    <span class="catalog-code">HH-MEM-0005</span>
+    <div class="photo-year">Años 40 - 2024</div>
+    <h3 class="photo-title">Casa Cuartel de la Guardia Civil</h3>
     <p class="photo-description">
-      Testigo silencioso de generaciones. Aquí se bautizaron nuestros abuelos, se casaron nuestros padres, 
-      y despedimos a los que se fueron. Sus campanas han marcado el tiempo de Herrera desde hace siglos. 
-      La fachada ha cambiado, pero sigue siendo el corazón espiritual del pueblo.
+      Edificio emblemático que albergó durante décadas a la Guardia Civil de Herrera. Símbolo de autoridad y orden público, 
+      esta construcción fue parte fundamental del entramado institucional del pueblo. La imagen antigua muestra su fachada 
+      original, mientras que la fotografía actual refleja su transformación y nuevo uso.
     </p>
     <p class="photo-people">
-      📷 Foto antigua: Archivo histórico familiar · Foto actual: Herrera Hoy 2024
+      📷 Foto antigua: Archivo histórico · Foto actual: Herrera Hoy 2024
     </p>
     
     <div class="photo-meta">
-      <div><span>Ubicación:</span> Plaza de la Iglesia</div>
-      <div><span>Fecha aprox.:</span> Años 1930</div>
-      <div><span>Fuente:</span> Archivo familiar</div>
-      <div><span>Patrimonio:</span> Bien de Interés Cultural</div>
+      <div><span>Ubicación:</span> Centro de Herrera</div>
+      <div><span>Fecha aprox.:</span> Años 1940</div>
+      <div><span>Fuente:</span> Archivo histórico municipal</div>
+      <div><span>Uso original:</span> Cuartel de la Guardia Civil</div>
+      <div><span>Conservación:</span> Regular</div>
+      <div><span>Procedencia:</span> Archivo institucional</div>
     </div>
 
     <div class="photo-actions">
@@ -1216,7 +1390,7 @@
         </div>
         <div class="form-group">
           <label>Corrección o información adicional</label>
-          <textarea placeholder="Ej: Mi abuelo aparece en la foto antigua, era el sacristán..."></textarea>
+          <textarea placeholder="Ej: El edificio fue construido en..."></textarea>
         </div>
         <div class="form-actions">
           <button type="submit" class="btn-elite">Enviar</button>
@@ -1227,7 +1401,7 @@
   </div>
 </div>
 
-   <!-- FOTO 4 - CALLE PRINCIPAL -->
+<!-- FOTO 6 - CALLE PRINCIPAL -->
 <div class="photo-card">
   <div class="comparison-container" data-comparison>
     <img 
@@ -1245,9 +1419,9 @@
       class="comparison-image after"
       loading="lazy"
     >
-    <div class="comparison-slider">
+    <div class="comparison-slider" role="slider" aria-label="Comparador antes y después" tabindex="0">
       <div class="comparison-handle">
-        <svg viewBox="0 0 24 24">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
           <path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.41z"/>
           <path d="M8.59 16.59L4 12l4.59-4.59L10 6l-6 6 6 6-1.41 1.41z" transform="translate(10, 0)"/>
         </svg>
@@ -1257,8 +1431,10 @@
       <span class="comparison-label ayer">Ayer · Años 70</span>
       <span class="comparison-label hoy">Hoy · 2024</span>
     </div>
+    <div class="comparison-caption">Desliza para comparar</div>
   </div>
   <div class="photo-info">
+    <span class="catalog-code">HH-MEM-0006</span>
     <div class="photo-year">Años 70 - 2024</div>
     <h3 class="photo-title">Calle Principal</h3>
     <p class="photo-description">
@@ -1275,6 +1451,8 @@
       <div><span>Fecha aprox.:</span> Años 1970</div>
       <div><span>Fuente:</span> Archivo municipal</div>
       <div><span>Autor:</span> Desconocido</div>
+      <div><span>Conservación:</span> Buena</div>
+      <div><span>Procedencia:</span> Colección municipal</div>
     </div>
 
     <div class="photo-actions">
@@ -1303,9 +1481,6 @@
   </div>
 </div>
 
-    <!-- REPITE ESTE BLOQUE PARA CADA FOTO -->
-    <!-- Solo cambia: src, alt, data-*, año, título, descripción, metadatos -->
-
   </section>
 
   <!-- Footer Memorial -->
@@ -1315,6 +1490,9 @@
     </p>
     <p class="memorial-footer-text">
       Hecho con <span class="memorial-heart">♥</span> para Herrera
+    </p>
+    <p class="memorial-footer-text" style="font-style: normal; letter-spacing:.08em; text-transform:uppercase; font-size:12px; opacity:.75; margin-top: 30px;">
+      Archivo fotográfico · Procedencias: colección particular, archivo municipal y aportaciones vecinales
     </p>
   </footer>
 
@@ -1335,7 +1513,7 @@ backgroundMusic.volume = 0.3;
 
 // Función para activar música
 function activateMusic() {
-  if (musicActivated) return; // Ya está activada
+  if (musicActivated) return;
   
   backgroundMusic.play()
     .then(() => {
@@ -1384,8 +1562,10 @@ document.addEventListener('touchstart', () => {
   }
 }, { once: true, passive: true });
 
-// Control manual de música (botón)
-musicControl.addEventListener('click', () => {
+// Control manual de música (botón) - evita disparar listener global
+musicControl.addEventListener('click', (e) => {
+  e.stopPropagation(); // ACCESIBILIDAD: evita interferencia con activación global
+  
   if (isPlaying) {
     backgroundMusic.pause();
     musicControl.classList.remove('playing');
@@ -1417,14 +1597,25 @@ musicControl.addEventListener('click', () => {
 document.querySelectorAll('[data-comparison]').forEach(container => {
   const slider = container.querySelector('.comparison-slider');
   const afterImage = container.querySelector('.comparison-image.after');
+  const caption = container.querySelector('.comparison-caption');
   let isDragging = false;
   let current = 50;
+  let captionHidden = false;
   
   function setTo(p) {
     current = Math.max(0, Math.min(100, p));
     slider.style.left = current + '%';
     afterImage.style.clipPath = `inset(0 ${100 - current}% 0 0)`;
     slider.setAttribute('aria-valuenow', String(Math.round(current)));
+    slider.setAttribute('aria-valuetext', `${Math.round(current)}%`); // ACCESIBILIDAD
+    
+    // Ocultar caption después del primer uso
+    if (!captionHidden && caption) {
+      captionHidden = true;
+      setTimeout(() => {
+        caption.classList.add('hidden');
+      }, 1500);
+    }
   }
   
   function updateFromEvent(e) {
@@ -1450,7 +1641,6 @@ document.querySelectorAll('[data-comparison]').forEach(container => {
     }
   }
   
-  
   // Init
   setTo(50);
 
@@ -1472,12 +1662,10 @@ document.querySelectorAll('[data-comparison]').forEach(container => {
   container.addEventListener('dblclick', () => setTo(50));
 
   // Keyboard accessibility
-  slider.tabIndex = 0;
-  slider.setAttribute('role', 'slider');
-  slider.setAttribute('aria-label', 'Comparador antes y después');
   slider.setAttribute('aria-valuemin', '0');
   slider.setAttribute('aria-valuemax', '100');
   slider.setAttribute('aria-valuenow', '50');
+  slider.setAttribute('aria-valuetext', '50%'); // ACCESIBILIDAD
 
   slider.addEventListener('keydown', (e) => {
     const step = e.shiftKey ? 10 : 2;
@@ -1513,6 +1701,11 @@ function openModal(btn) {
 
   modal.classList.add('active');
   document.body.style.overflow = 'hidden';
+  
+  // ACCESIBILIDAD: focus en botón cerrar
+  setTimeout(() => {
+    document.getElementById('modalClose').focus();
+  }, 100);
 }
 
 document.getElementById('modalClose').addEventListener('click', () => {
