@@ -1,0 +1,1609 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Archivo fotográfico memorial de Herrera. En memoria de los que ya no están.">
+  <title>Herrera: Ayer y Hoy · Archivo Memorial</title>
+  
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@300;400;600&family=Inter:wght@300;400;500;600&display=swap');
+
+    :root {
+      --bg-dark: #0b0c0f;
+      --bg-panel: rgba(255, 255, 255, 0.03);
+      --text-primary: #f5f5f5;
+      --text-muted: rgba(245, 245, 245, 0.72);
+      --text-subtle: rgba(245, 245, 245, 0.45);
+      
+      /* Oro latón envejecido */
+      --accent: #c7a24b;
+      --accent-soft: rgba(199, 162, 75, 0.18);
+      --accent-border: rgba(199, 162, 75, 0.35);
+      
+      /* Strokes institucionales */
+      --stroke: rgba(255, 255, 255, 0.10);
+      --stroke-strong: rgba(255, 255, 255, 0.16);
+      
+      /* Sombras premium */
+      --shadow: 0 18px 60px rgba(0, 0, 0, 0.55);
+      --shadow-soft: 0 4px 16px rgba(0, 0, 0, 0.3);
+      
+      /* Editorial */
+      --reading: 72ch;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-dark);
+      color: var(--text-primary);
+      overflow-x: hidden;
+      line-height: 1.6;
+      position: relative;
+    }
+
+    /* Grano + viñeta sutil */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(1200px 600px at 50% 10%, rgba(199, 162, 75, 0.10), transparent 60%),
+        radial-gradient(900px 500px at 50% 80%, rgba(255, 255, 255, 0.04), transparent 60%),
+        radial-gradient(circle at 50% 50%, transparent 55%, rgba(0, 0, 0, 0.55) 100%);
+      mix-blend-mode: screen;
+      opacity: 0.55;
+      z-index: 0;
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.015), rgba(255, 255, 255, 0.015) 1px, transparent 1px, transparent 3px);
+      opacity: 0.12;
+      z-index: 0;
+    }
+
+    /* Header Memorial */
+    .memorial-header {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 40px 20px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .memorial-badge {
+      width: 80px;
+      height: 80px;
+      border-radius: 0;
+      border: 2px solid var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 30px;
+      background: var(--accent-soft);
+    }
+
+    .memorial-badge svg {
+      width: 40px;
+      height: 40px;
+      fill: var(--accent);
+    }
+
+    /* Placa institucional */
+    .memorial-plaque {
+      display: inline-flex;
+      gap: 14px;
+      align-items: center;
+      padding: 10px 14px;
+      border: 1px solid var(--stroke);
+      background: rgba(0, 0, 0, 0.35);
+      backdrop-filter: blur(10px);
+      margin-bottom: 18px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-size: 11px;
+      color: var(--text-muted);
+      border-radius: 0;
+    }
+
+    .memorial-plaque b {
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .memorial-title {
+      font-family: 'Crimson Pro', serif;
+      font-size: clamp(32px, 6vw, 64px);
+      font-weight: 300;
+      letter-spacing: 2px;
+      margin-bottom: 16px;
+      color: var(--text-primary);
+    }
+
+    .memorial-subtitle {
+      font-family: 'Crimson Pro', serif;
+      font-size: clamp(18px, 3vw, 28px);
+      font-weight: 300;
+      font-style: italic;
+      color: var(--accent);
+      margin-bottom: 40px;
+      letter-spacing: 1px;
+    }
+
+    .memorial-intro {
+      max-width: var(--reading);
+      font-size: 16px;
+      line-height: 1.8;
+      color: var(--text-muted);
+      margin-bottom: 50px;
+      font-weight: 300;
+    }
+
+    .scroll-indicator {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      opacity: 0.6;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    .scroll-indicator span {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--text-subtle);
+    }
+
+    .scroll-arrow {
+      width: 24px;
+      height: 24px;
+      border-bottom: 2px solid var(--accent);
+      border-right: 2px solid var(--accent);
+      transform: rotate(45deg);
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(-10px); }
+    }
+
+    /* Music Control */
+    .music-control {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      z-index: 9999;
+      width: 56px;
+      height: 56px;
+      background: var(--accent-soft);
+      border: 1px solid var(--accent);
+      border-radius: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
+    }
+
+    .music-control:hover {
+      background: rgba(199, 162, 75, 0.3);
+      transform: scale(1.05);
+    }
+
+    .music-control svg {
+      width: 24px;
+      height: 24px;
+      fill: var(--accent);
+    }
+
+    .music-control.playing {
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(199, 162, 75, 0.4); }
+      50% { box-shadow: 0 0 0 10px rgba(199, 162, 75, 0); }
+    }
+
+/* Gallery Section */
+.gallery-section {
+  padding: 100px 20px;
+  max-width: 1400px;  /* ← Ampliado de 1200px */
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.section-header h2 {
+  font-family: 'Crimson Pro', serif;
+  font-size: clamp(28px, 4vw, 48px);
+  font-weight: 300;
+  margin-bottom: 16px;
+  letter-spacing: 1px;
+}
+
+.section-header p {
+  color: var(--text-muted);
+  font-size: 15px;
+  max-width: 600px;
+  margin: 0 auto;
+  font-weight: 300;
+}
+
+/* Photo Card - estilo museo */
+.photo-card {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.015));
+  border: 1px solid var(--stroke);
+  border-radius: 0;
+  overflow: hidden;
+  margin-bottom: 50px;
+  transition: all 0.4s ease;
+  max-width: 1100px;  /* ← AMPLIADO de 900px a 1100px */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.photo-card:hover {
+  border-color: var(--accent-border);
+  box-shadow: var(--shadow);
+}
+
+.comparison-container {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4/3;
+  overflow: hidden;
+  background: #000;
+  max-height: 700px;  /* ← AMPLIADO de 550px a 700px */
+}
+
+.comparison-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+}
+
+.comparison-image.after {
+  clip-path: inset(0 50% 0 0);
+}
+
+/* Slider élite */
+.comparison-slider {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 2px;
+  height: 100%;
+  background: linear-gradient(to bottom, transparent, var(--accent), transparent);
+  cursor: ew-resize;
+  z-index: 10;
+  transform: translateX(-50%);
+}
+
+.comparison-slider:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.comparison-handle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 44px;
+  height: 44px;
+  background: rgba(199, 162, 75, 0.92);
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.55);
+  outline: 1px solid rgba(0, 0, 0, 0.25);
+}
+
+.comparison-handle svg {
+  width: 24px;
+  height: 24px;
+  fill: var(--bg-dark);
+}
+
+.comparison-labels {
+  position: absolute;
+  top: 20px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 20px;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.comparison-label {
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(10px);
+  padding: 8px 16px;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-weight: 500;
+  border-radius: 0;
+  border: 1px solid var(--stroke-strong);
+}
+
+.comparison-label.ayer {
+  color: var(--accent);
+}
+
+.comparison-label.hoy {
+  color: #fff;
+}
+
+/* Info élite */
+.photo-info {
+  padding: 30px;
+  background: rgba(255, 255, 255, 0.01);
+}
+
+.photo-year {
+  color: var(--accent);
+  font-size: 14px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 12px;
+}
+
+.photo-title {
+  font-family: 'Crimson Pro', serif;
+  font-size: 24px;
+  font-weight: 400;
+  margin-bottom: 12px;
+  color: var(--text-primary);
+}
+
+.photo-description {
+  color: var(--text-muted);
+  font-size: 15px;
+  line-height: 1.7;
+  margin-bottom: 16px;
+  font-weight: 300;
+}
+
+.photo-people {
+  font-size: 13px;
+  color: var(--text-muted);
+  font-style: italic;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+/* Metadatos archivo */
+.photo-meta {
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px 18px;
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+.photo-meta span {
+  color: var(--text-subtle);
+}
+
+/* Responsive móvil */
+@media (max-width: 768px) {
+  .gallery-section {
+    padding: 60px 16px;
+  }
+
+  .section-header {
+    margin-bottom: 40px;
+  }
+
+  .photo-card {
+    margin-bottom: 40px;
+  }
+
+  .comparison-container {
+    aspect-ratio: 1/1;
+    max-height: 500px;  /* ← AMPLIADO de 400px a 500px en móvil */
+  }
+
+  .photo-info {
+    padding: 20px;
+  }
+
+  .photo-meta {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .comparison-labels {
+    padding: 0 12px;
+  }
+
+  .comparison-label {
+    font-size: 10px;
+    padding: 6px 12px;
+  }
+}
+    /* Botones élite */
+    .photo-actions {
+      margin-top: 18px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn-elite {
+      border: 1px solid var(--stroke);
+      background: rgba(0, 0, 0, 0.35);
+      color: rgba(245, 245, 245, 0.85);
+      padding: 10px 14px;
+      font-size: 12px;
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      backdrop-filter: blur(10px);
+      border-radius: 0;
+      font-family: 'Inter', sans-serif;
+      font-weight: 500;
+    }
+
+    .btn-elite:hover {
+      border-color: var(--accent-border);
+      transform: translateY(-1px);
+      background: rgba(199, 162, 75, 0.1);
+    }
+
+    /* Modal */
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.95);
+      backdrop-filter: blur(20px);
+      z-index: 99999;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .modal.active {
+      display: flex;
+    }
+
+    .modal-content {
+      max-width: 1200px;
+      max-height: 90vh;
+      position: relative;
+      animation: modalIn 0.3s ease;
+    }
+
+    @keyframes modalIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    .modal-image {
+      max-width: 100%;
+      max-height: 80vh;
+      object-fit: contain;
+      border: 1px solid var(--stroke);
+      border-radius: 0;
+    }
+
+    .modal-info {
+      background: var(--bg-panel);
+      border: 1px solid var(--stroke);
+      padding: 20px;
+      margin-top: 16px;
+      border-radius: 0;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: -50px;
+      right: 0;
+      width: 40px;
+      height: 40px;
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid var(--stroke);
+      border-radius: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: #fff;
+      font-size: 24px;
+      transition: all 0.2s ease;
+    }
+
+    .modal-close:hover {
+      background: rgba(199, 162, 75, 0.3);
+      border-color: var(--accent);
+    }
+
+    /* Form correcciones */
+    .correction-form {
+      background: var(--bg-panel);
+      border: 1px solid var(--stroke);
+      padding: 24px;
+      margin-top: 20px;
+      border-radius: 0;
+      display: none;
+    }
+
+    .correction-form.active {
+      display: block;
+    }
+
+    .correction-form h3 {
+      font-family: 'Crimson Pro', serif;
+      font-size: 20px;
+      margin-bottom: 16px;
+      color: var(--accent);
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid var(--stroke);
+      border-radius: 0;
+      padding: 10px 12px;
+      color: var(--text-primary);
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+    }
+
+    .form-group textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+
+    .form-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    /* Footer Memorial */
+    .memorial-footer {
+      padding: 80px 20px;
+      text-align: center;
+      background: rgba(0, 0, 0, 0.3);
+      border-top: 1px solid var(--stroke);
+      position: relative;
+      z-index: 1;
+    }
+
+    .memorial-footer-text {
+      font-family: 'Crimson Pro', serif;
+      font-size: 18px;
+      font-style: italic;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+    }
+
+    .memorial-heart {
+      display: inline-block;
+      color: var(--accent);
+      animation: heartbeat 2s ease-in-out infinite;
+    }
+
+    @keyframes heartbeat {
+      0%, 100% { transform: scale(1); }
+      10%, 30% { transform: scale(1.1); }
+      20%, 40% { transform: scale(1); }
+    }
+
+    /* Loading */
+    .loading-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--bg-dark);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 99999;
+      transition: opacity 0.5s ease;
+    }
+
+    .loading-overlay.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .loading-spinner {
+      width: 50px;
+      height: 50px;
+      border: 2px solid var(--accent-soft);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .memorial-header {
+        min-height: 80vh;
+        padding: 40px 20px;
+      }
+
+      .gallery-section {
+        padding: 60px 16px;
+      }
+
+      .photo-card {
+        margin-bottom: 40px;
+      }
+
+      .photo-info {
+        padding: 20px;
+      }
+
+      .photo-meta {
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+
+      .comparison-labels {
+        padding: 0 12px;
+      }
+
+      .music-control {
+        bottom: 20px;
+        right: 20px;
+        width: 48px;
+        height: 48px;
+      }
+
+      .modal-close {
+        top: 10px;
+        right: 10px;
+      }
+    }
+
+    /* Accesibilidad */
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+  </style>
+</head>
+<body>
+
+  <!-- Loading -->
+  <div class="loading-overlay" id="loading">
+    <div class="loading-spinner"></div>
+  </div>
+
+  <!-- Music Control -->
+  <div class="music-control" id="musicControl" title="Reproducir música">
+    <svg viewBox="0 0 24 24" class="play-icon">
+      <path d="M8 5v14l11-7z"/>
+    </svg>
+    <svg viewBox="0 0 24 24" class="pause-icon" style="display: none;">
+      <path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z"/>
+    </svg>
+  </div>
+
+  <!-- Audio Element -->
+  <audio id="backgroundMusic" loop preload="none">
+    <source src="https://herrerahoy.es/music/Erik_Satie-gymnopedies.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- Modal -->
+  <div class="modal" id="imageModal">
+    <div class="modal-content">
+      <button class="modal-close" id="modalClose" aria-label="Cerrar">×</button>
+      <img src="" alt="" class="modal-image" id="modalImage">
+      <div class="modal-info">
+        <div class="photo-year" id="modalYear"></div>
+        <h3 class="photo-title" id="modalTitle"></h3>
+        <p class="photo-description" id="modalDesc"></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Header Memorial -->
+  <section class="memorial-header">
+    <div class="memorial-badge">
+      <svg viewBox="0 0 24 24">
+        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+      </svg>
+    </div>
+
+    <div class="memorial-plaque">
+      <b>Archivo</b> · Colección "Herrera" · Ayer y Hoy
+    </div>
+    
+    <h1 class="memorial-title">Herrera: Ayer y Hoy</h1>
+    <p class="memorial-subtitle">En memoria de los que ya no están</p>
+    
+    <div class="memorial-intro">
+      <p>
+        Este es un homenaje a nuestra Herrera de siempre, a las calles que vieron crecer a nuestros abuelos, 
+        a las plazas donde jugaron nuestros padres, y a todos aquellos que ya no están pero que viven 
+        en cada rincón de este pueblo que tanto amamos.
+      </p>
+      <p style="margin-top: 20px;">
+        A través de estas imágenes, recordamos lo que fuimos y celebramos lo que somos.
+      </p>
+    </div>
+
+    <div class="scroll-indicator">
+      <span>Descubre</span>
+      <div class="scroll-arrow"></div>
+    </div>
+  </section>
+
+  <!-- Gallery Section -->
+  <section class="gallery-section">
+    <div class="section-header">
+      <h2>Memoria Fotográfica</h2>
+      <p>Desliza el control en cada imagen para viajar en el tiempo · Usa ← → para navegar · Doble click para resetear</p>
+    </div>
+
+<!-- FOTO 1 - IGLESIA DE SANTIAGO EL MAYOR -->
+<div class="photo-card">
+  <div class="comparison-container" data-comparison>
+    <img 
+      src="https://herrerahoy.es/img/memorandum/DSC06221i.webp" 
+      alt="Iglesia de Santa María Magdalena - Ayer" 
+      class="comparison-image before"
+      loading="eager"
+      data-title="Iglesia de Santa María Magdalena"
+      data-year="Años 50 - 2024"
+      data-desc="Testigo silencioso de generaciones. Aquí se bautizaron nuestros abuelos, se casaron nuestros padres, y despedimos a los que se fueron. Sus campanas han marcado el tiempo de Herrera desde hace siglos."
+    >
+    <img 
+      src="https://herrerahoy.es/img/memorandum/5%20a.webp" 
+      alt="Iglesia de Santa María Magdalena - Hoy" 
+      class="comparison-image after"
+      loading="eager"
+    >
+    <div class="comparison-slider">
+      <div class="comparison-handle">
+        <svg viewBox="0 0 24 24">
+          <path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.41z"/>
+          <path d="M8.59 16.59L4 12l4.59-4.59L10 6l-6 6 6 6-1.41 1.41z" transform="translate(10, 0)"/>
+        </svg>
+      </div>
+    </div>
+    <div class="comparison-labels">
+      <span class="comparison-label ayer">Ayer · Años 30</span>
+      <span class="comparison-label hoy">Hoy · 2026</span>
+    </div>
+  </div>
+  <div class="photo-info">
+    <div class="photo-year">Años 30 - 2024</div>
+    <h3 class="photo-title">Iglesia de Santiago el Mayor</h3>
+    <p class="photo-description">
+      Testigo silencioso de generaciones. Aquí se bautizaron nuestros abuelos, se casaron nuestros padres, 
+      y despedimos a los que se fueron. Sus campanas han marcado el tiempo de Herrera desde hace siglos. 
+      La fachada ha cambiado, pero sigue siendo el corazón espiritual del pueblo.
+    </p>
+    <p class="photo-people">
+      📷 Foto antigua: Archivo histórico familiar · Foto actual: Herrera Hoy 2024
+    </p>
+    
+    <div class="photo-meta">
+      <div><span>Ubicación:</span> Plaza de la Iglesia</div>
+      <div><span>Fecha aprox.:</span> Años 1930</div>
+      <div><span>Fuente:</span> Archivo familiar</div>
+      <div><span>Patrimonio:</span> Bien de Interés Cultural</div>
+    </div>
+
+    <div class="photo-actions">
+      <button class="btn-elite" type="button" onclick="openModal(this)">Ver en grande</button>
+      <button class="btn-elite" type="button" onclick="sharePhoto(this)">Compartir</button>
+      <button class="btn-elite" type="button" onclick="toggleCorrection(this)">Enviar corrección</button>
+    </div>
+
+    <div class="correction-form">
+      <h3>Enviar corrección o aportación</h3>
+      <form onsubmit="return submitCorrection(event, this)">
+        <div class="form-group">
+          <label>Tu nombre (opcional)</label>
+          <input type="text" placeholder="Ej: María López">
+        </div>
+        <div class="form-group">
+          <label>Corrección o información adicional</label>
+          <textarea placeholder="Ej: Mi abuelo aparece en la foto antigua, era el sacristán..."></textarea>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="btn-elite">Enviar</button>
+          <button type="button" class="btn-elite" onclick="toggleCorrection(this)">Cancelar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+<!-- FOTO 2 - CALLE TENIENTE MUÑOZ OLIVÉ (AYER/HOY) -->
+<div class="photo-card">
+  <div class="comparison-container" data-comparison>
+    <img 
+      src="https://herrerahoy.es/img/memorandum/munozolive.webp" 
+      alt="Calle del Capitán Manuel Muñoz Olivé (1914) - Ayer" 
+      class="comparison-image before"
+      loading="eager"
+      data-title="Calle Teniente Muñoz Olivé"
+      data-year="1914–1917 · Hoy"
+      data-desc="Calle del Capitán Manuel Muñoz Olivé (1914). En 1917 aparece como Calle Teniente Muñoz Olivé. El heroico militar que da nombre a la calle, muerto en el Rif el año 1911, pasó su infancia en la casa, donde se inscribió una lápida recordatoria. En la parte derecha despunta el campanario de la iglesia de Santiago el Mayor."
+    >
+    <img 
+      src="https://herrerahoy.es/img/memorandum/munozolivehoy.webp" 
+      alt="Calle Teniente Muñoz Olivé - Hoy" 
+      class="comparison-image after"
+      loading="eager"
+    >
+
+    <div class="comparison-slider">
+      <div class="comparison-handle">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.41z"/>
+          <path d="M8.59 16.59L4 12l4.59-4.59L10 6l-6 6 6 6-1.41 1.41z" transform="translate(10, 0)"/>
+        </svg>
+      </div>
+    </div>
+
+    <div class="comparison-labels">
+      <span class="comparison-label ayer">Ayer · 1914</span>
+      <span class="comparison-label hoy">Hoy · 2026</span>
+    </div>
+  </div>
+
+  <div class="photo-info">
+    <div class="photo-year">1914–1917 · 2026</div>
+    <h3 class="photo-title">Calle Teniente Muñoz Olivé</h3>
+
+    <p class="photo-description">
+      <strong>Calle del Capitán Manuel Muñoz Olivé. 1914.</strong> En 1917 aparece como 
+      <strong>Calle Teniente Muñoz Olivé</strong>. El heroico militar que da nombre a la calle, muerto en el Rif 
+      el año 1911, pasó su infancia en la casa, donde se inscribió una lápida recordatoria. 
+      En la parte derecha despunta el campanario de la iglesia de Santiago el Mayor.
+    </p>
+
+    <p class="photo-people">
+      📷 Foto antigua: Archivo histórico · Foto actual: Herrera Hoy
+    </p>
+
+    <div class="photo-meta">
+      <div><span>Ubicación:</span> Calle Teniente Muñoz Olivé</div>
+      <div><span>Denominación (1914):</span> Calle del Capitán Manuel Muñoz Olivé</div>
+      <div><span>Referencia (1917):</span> Calle Teniente Muñoz Olivé</div>
+      <div><span>Detalle visible:</span> Campanario de Santiago el Mayor</div>
+    </div>
+
+    <div class="photo-actions">
+      <button class="btn-elite" type="button" onclick="openModal(this)">Ver en grande</button>
+      <button class="btn-elite" type="button" onclick="sharePhoto(this)">Compartir</button>
+      <button class="btn-elite" type="button" onclick="toggleCorrection(this)">Enviar corrección</button>
+    </div>
+
+    <div class="correction-form">
+      <h3>Enviar corrección o aportación</h3>
+      <form onsubmit="return submitCorrection(event, this)">
+        <div class="form-group">
+          <label>Tu nombre (opcional)</label>
+          <input type="text" placeholder="Ej: María López">
+        </div>
+        <div class="form-group">
+          <label>Corrección o información adicional</label>
+          <textarea placeholder="Ej: La lápida estaba en la fachada de la casa de..."></textarea>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="btn-elite">Enviar</button>
+          <button type="button" class="btn-elite" onclick="toggleCorrection(this)">Cancelar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+<!-- FOTO 3 - PLAZA (AÑOS 50 vs HOY) -->
+<div class="photo-card">
+  <div class="comparison-container" data-comparison>
+    <img 
+      src="https://herrerahoy.es/img/memorandum/00179973.webp" 
+      alt="Plaza del Pueblo - Ayer (años 50)" 
+      class="comparison-image before"
+      loading="eager"
+      data-title="Plaza del Pueblo"
+      data-year="Años 50 - 2026"
+      data-desc="La Plaza, punto de encuentro de generaciones. Aquí se cruzaban miradas, se celebraban fiestas y se hacía vida sin prisa. Cambian fachadas y comercios, pero la plaza sigue siendo el centro emocional del pueblo."
+    >
+    <img 
+      src="https://herrerahoy.es/img/memorandum/plazahoy.webp" 
+      alt="Plaza del Pueblo - Hoy (2026)" 
+      class="comparison-image after"
+      loading="eager"
+    >
+
+    <div class="comparison-slider">
+      <div class="comparison-handle">
+        <svg viewBox="0 0 24 24">
+          <path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.41z"/>
+          <path d="M8.59 16.59L4 12l4.59-4.59L10 6l-6 6 6 6-1.41 1.41z" transform="translate(10, 0)"/>
+        </svg>
+      </div>
+    </div>
+
+    <div class="comparison-labels">
+      <span class="comparison-label ayer">Ayer · Años 50</span>
+      <span class="comparison-label hoy">Hoy · 2026</span>
+    </div>
+  </div>
+
+  <div class="photo-info">
+    <div class="photo-year">Años 50 - 2026</div>
+    <h3 class="photo-title">Calle Blas Infante</h3>
+    <p class="photo-description">
+      La calle Blas Infante ha sido siempre un lugar donde todo empieza por las mañanas: café, encuentros, fiestas, conversaciones al fresco
+      y días de mercado. El tiempo moderniza el entorno, pero no borra lo importante: la calle Blas Infante fue y sigue
+      siendo el corazón civil y cotidiano de Herrera.
+    </p>
+
+    <p class="photo-people">
+      📷 Foto antigua: Archivo histórico · Foto actual: Herrera Hoy
+    </p>
+
+    <div class="photo-meta">
+      <div><span>Ubicación:</span> Calle Blas Infante</div>
+      <div><span>Fecha aprox.:</span> Años 1950</div>
+      <div><span>Fuente:</span> Archivo histórico</div>
+      <div><span>Estado:</span> Centro urbano</div>
+    </div>
+
+    <div class="photo-actions">
+      <button class="btn-elite" type="button" onclick="openModal(this)">Ver en grande</button>
+      <button class="btn-elite" type="button" onclick="sharePhoto(this)">Compartir</button>
+      <button class="btn-elite" type="button" onclick="toggleCorrection(this)">Enviar corrección</button>
+    </div>
+
+    <div class="correction-form">
+      <h3>Enviar corrección o aportación</h3>
+      <form onsubmit="return submitCorrection(event, this)">
+        <div class="form-group">
+          <label>Tu nombre (opcional)</label>
+          <input type="text" placeholder="Ej: Juan Pérez">
+        </div>
+        <div class="form-group">
+          <label>Corrección o información adicional</label>
+          <textarea placeholder="Ej: La foto antigua es de la feria de... / Ese edificio era..."></textarea>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="btn-elite">Enviar</button>
+          <button type="button" class="btn-elite" onclick="toggleCorrection(this)">Cancelar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- FOTO - ERMITA DE NUESTRA SEÑORA DE LA CONCEPCIÓN (AYER/HOY) -->
+<div class="photo-card">
+  <div class="comparison-container" data-comparison>
+    <img 
+      src="https://herrerahoy.es/img/memorandum/3-b.webp" 
+      alt="Ermita de Nuestra Señora de la Concepción - Ayer" 
+      class="comparison-image before"
+      loading="eager"
+      data-title="Ermita de Nuestra Señora de la Concepción"
+      data-year="Siglo XX · Hoy"
+      data-desc="Uno de los rincones más queridos de Herrera. La Ermita de Nuestra Señora de la Concepción ha acompañado generaciones de vecinos, siendo punto de encuentro, tradición y devoción popular."
+    >
+    <img 
+      src="https://herrerahoy.es/img/memorandum/Captura-de-pantalla-2026-02-07-032518.webp" 
+      alt="Ermita de Nuestra Señora de la Concepción - Hoy" 
+      class="comparison-image after"
+      loading="eager"
+    >
+
+    <div class="comparison-slider">
+      <div class="comparison-handle">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.41z"/>
+          <path d="M8.59 16.59L4 12l4.59-4.59L10 6l-6 6 6 6-1.41 1.41z" transform="translate(10, 0)"/>
+        </svg>
+      </div>
+    </div>
+
+    <div class="comparison-labels">
+      <span class="comparison-label ayer">Ayer · Siglo XX</span>
+      <span class="comparison-label hoy">Hoy · 2026</span>
+    </div>
+  </div>
+
+  <div class="photo-info">
+    <div class="photo-year">Siglo XX · 2026</div>
+    <h3 class="photo-title">Ermita de Nuestra Señora de la Concepción</h3>
+
+    <p class="photo-description">
+      Uno de los rincones más queridos de Herrera. La Ermita de Nuestra Señora de la Concepción ha sido durante décadas 
+      lugar de encuentro, tradición y devoción popular. La imagen antigua muestra su entorno original, mientras que la 
+      fotografía actual refleja la evolución del pueblo sin perder su esencia.
+    </p>
+
+    <p class="photo-people">
+      📷 Foto antigua: Archivo histórico · Foto actual: Herrera Hoy 2026
+    </p>
+
+    <div class="photo-meta">
+      <div><span>Ubicación:</span> Herrera (Sevilla)</div>
+      <div><span>Periodo imagen antigua:</span> Siglo XX</div>
+      <div><span>Patrimonio local:</span> Tradición religiosa y cultural</div>
+      <div><span>Serie:</span> Memorándum · Ayer y Hoy</div>
+    </div>
+
+    <div class="photo-actions">
+      <button class="btn-elite" type="button" onclick="openModal(this)">Ver en grande</button>
+      <button class="btn-elite" type="button" onclick="sharePhoto(this)">Compartir</button>
+      <button class="btn-elite" type="button" onclick="toggleCorrection(this)">Enviar corrección</button>
+    </div>
+
+    <div class="correction-form">
+      <h3>Enviar corrección o aportación</h3>
+      <form onsubmit="return submitCorrection(event, this)">
+        <div class="form-group">
+          <label>Tu nombre (opcional)</label>
+          <input type="text" placeholder="Ej: Antonio Ruiz">
+        </div>
+        <div class="form-group">
+          <label>Corrección o información adicional</label>
+          <textarea placeholder="Ej: La ermita fue restaurada en..."></textarea>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="btn-elite">Enviar</button>
+          <button type="button" class="btn-elite" onclick="toggleCorrection(this)">Cancelar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- FOTO 3 -->
+<div class="photo-card">
+  <div class="comparison-container" data-comparison>
+    <img 
+      src="https://herrerahoy.es/img/memorandum/cuartelantiguo.webp" 
+      alt="Iglesia de Santa María Magdalena - Ayer" 
+      class="comparison-image before"
+      loading="eager"
+      data-title="Iglesia de Santa María Magdalena"
+      data-year="Años 50 - 2024"
+      data-desc="Testigo silencioso de generaciones. Aquí se bautizaron nuestros abuelos, se casaron nuestros padres, y despedimos a los que se fueron. Sus campanas han marcado el tiempo de Herrera desde hace siglos."
+    >
+    <img 
+      src="https://herrerahoy.es/img/memorandum/casacuartelhoy.webp" 
+      alt="Iglesia de Santa María Magdalena - Hoy" 
+      class="comparison-image after"
+      loading="eager"
+    >
+    <div class="comparison-slider">
+      <div class="comparison-handle">
+        <svg viewBox="0 0 24 24">
+          <path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.41z"/>
+          <path d="M8.59 16.59L4 12l4.59-4.59L10 6l-6 6 6 6-1.41 1.41z" transform="translate(10, 0)"/>
+        </svg>
+      </div>
+    </div>
+    <div class="comparison-labels">
+      <span class="comparison-label ayer">Hoy · 2026</span>
+      <span class="comparison-label hoy">Ayer · Años 30</span>
+    </div>
+  </div>
+  <div class="photo-info">
+    <div class="photo-year">Años 30 - 2024</div>
+    <h3 class="photo-title">Iglesia de Santiago el Mayor</h3>
+    <p class="photo-description">
+      Testigo silencioso de generaciones. Aquí se bautizaron nuestros abuelos, se casaron nuestros padres, 
+      y despedimos a los que se fueron. Sus campanas han marcado el tiempo de Herrera desde hace siglos. 
+      La fachada ha cambiado, pero sigue siendo el corazón espiritual del pueblo.
+    </p>
+    <p class="photo-people">
+      📷 Foto antigua: Archivo histórico familiar · Foto actual: Herrera Hoy 2024
+    </p>
+    
+    <div class="photo-meta">
+      <div><span>Ubicación:</span> Plaza de la Iglesia</div>
+      <div><span>Fecha aprox.:</span> Años 1930</div>
+      <div><span>Fuente:</span> Archivo familiar</div>
+      <div><span>Patrimonio:</span> Bien de Interés Cultural</div>
+    </div>
+
+    <div class="photo-actions">
+      <button class="btn-elite" type="button" onclick="openModal(this)">Ver en grande</button>
+      <button class="btn-elite" type="button" onclick="sharePhoto(this)">Compartir</button>
+      <button class="btn-elite" type="button" onclick="toggleCorrection(this)">Enviar corrección</button>
+    </div>
+
+    <div class="correction-form">
+      <h3>Enviar corrección o aportación</h3>
+      <form onsubmit="return submitCorrection(event, this)">
+        <div class="form-group">
+          <label>Tu nombre (opcional)</label>
+          <input type="text" placeholder="Ej: María López">
+        </div>
+        <div class="form-group">
+          <label>Corrección o información adicional</label>
+          <textarea placeholder="Ej: Mi abuelo aparece en la foto antigua, era el sacristán..."></textarea>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="btn-elite">Enviar</button>
+          <button type="button" class="btn-elite" onclick="toggleCorrection(this)">Cancelar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+   <!-- FOTO 4 - CALLE PRINCIPAL -->
+<div class="photo-card">
+  <div class="comparison-container" data-comparison>
+    <img 
+      src="https://herrerahoy.es/img/memorandum/203790830_tcimg_8D53686F.webp" 
+      alt="Calle Principal - Ayer" 
+      class="comparison-image before"
+      loading="lazy"
+      data-title="Calle Principal"
+      data-year="Años 70 - 2024"
+      data-desc="La arteria principal de Herrera, donde transcurría la vida del pueblo. Aquí estaban las tiendas de siempre, la gente paseaba al atardecer, y los niños jugaban en la calle."
+    >
+    <img 
+      src="https://herrerahoy.es/img/memorandum/Captura%20de%20pantalla%202026-02-06%20184117.webp" 
+      alt="Calle Principal - Hoy" 
+      class="comparison-image after"
+      loading="lazy"
+    >
+    <div class="comparison-slider">
+      <div class="comparison-handle">
+        <svg viewBox="0 0 24 24">
+          <path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.41z"/>
+          <path d="M8.59 16.59L4 12l4.59-4.59L10 6l-6 6 6 6-1.41 1.41z" transform="translate(10, 0)"/>
+        </svg>
+      </div>
+    </div>
+    <div class="comparison-labels">
+      <span class="comparison-label ayer">Ayer · Años 70</span>
+      <span class="comparison-label hoy">Hoy · 2024</span>
+    </div>
+  </div>
+  <div class="photo-info">
+    <div class="photo-year">Años 70 - 2024</div>
+    <h3 class="photo-title">Calle Principal</h3>
+    <p class="photo-description">
+      La arteria principal de Herrera, donde transcurría la vida del pueblo. Aquí estaban las tiendas de siempre, 
+      la gente paseaba al atardecer, y los niños jugaban en la calle. El asfalto sustituyó al empedrado, 
+      pero el alma de esta calle sigue intacta.
+    </p>
+    <p class="photo-people">
+      📷 Foto antigua: Archivo histórico · Foto actual: Herrera Hoy 2024
+    </p>
+    
+    <div class="photo-meta">
+      <div><span>Ubicación:</span> Calle Principal</div>
+      <div><span>Fecha aprox.:</span> Años 1970</div>
+      <div><span>Fuente:</span> Archivo municipal</div>
+      <div><span>Autor:</span> Desconocido</div>
+    </div>
+
+    <div class="photo-actions">
+      <button class="btn-elite" type="button" onclick="openModal(this)">Ver en grande</button>
+      <button class="btn-elite" type="button" onclick="sharePhoto(this)">Compartir</button>
+      <button class="btn-elite" type="button" onclick="toggleCorrection(this)">Enviar corrección</button>
+    </div>
+
+    <div class="correction-form">
+      <h3>Enviar corrección o aportación</h3>
+      <form onsubmit="return submitCorrection(event, this)">
+        <div class="form-group">
+          <label>Tu nombre (opcional)</label>
+          <input type="text" placeholder="Ej: Juan García">
+        </div>
+        <div class="form-group">
+          <label>Corrección o información adicional</label>
+          <textarea placeholder="Ej: En la foto también aparece..."></textarea>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="btn-elite">Enviar</button>
+          <button type="button" class="btn-elite" onclick="toggleCorrection(this)">Cancelar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+    <!-- REPITE ESTE BLOQUE PARA CADA FOTO -->
+    <!-- Solo cambia: src, alt, data-*, año, título, descripción, metadatos -->
+
+  </section>
+
+  <!-- Footer Memorial -->
+  <footer class="memorial-footer">
+    <p class="memorial-footer-text">
+      Para los que ya no están, pero nunca se fueron
+    </p>
+    <p class="memorial-footer-text">
+      Hecho con <span class="memorial-heart">♥</span> para Herrera
+    </p>
+  </footer>
+
+<script>
+// ═══════════════════════════════════════════════════════════════════════
+// AUTOPLAY SILENCIOSO (sin overlay, activación al primer click)
+// ═══════════════════════════════════════════════════════════════════════
+
+const musicControl = document.getElementById('musicControl');
+const backgroundMusic = document.getElementById('backgroundMusic');
+const playIcon = musicControl.querySelector('.play-icon');
+const pauseIcon = musicControl.querySelector('.pause-icon');
+let isPlaying = false;
+let musicActivated = false;
+
+// Configurar volumen
+backgroundMusic.volume = 0.3;
+
+// Función para activar música
+function activateMusic() {
+  if (musicActivated) return; // Ya está activada
+  
+  backgroundMusic.play()
+    .then(() => {
+      isPlaying = true;
+      musicActivated = true;
+      musicControl.classList.add('playing');
+      playIcon.style.display = 'none';
+      pauseIcon.style.display = 'block';
+      musicControl.title = 'Pausar música';
+      localStorage.setItem('herrera_music', 'playing');
+    })
+    .catch(() => {
+      // Falla silenciosamente, se activará con primer click del usuario
+    });
+}
+
+// Intentar autoplay al cargar
+window.addEventListener('load', () => {
+  // Ocultar loading
+  setTimeout(() => {
+    document.getElementById('loading').classList.add('hidden');
+  }, 500);
+
+  // Comprobar preferencia
+  const musicPref = localStorage.getItem('herrera_music');
+  
+  // Intentar autoplay si no ha pausado manualmente antes
+  if (musicPref !== 'paused') {
+    setTimeout(() => {
+      activateMusic();
+    }, 1000);
+  }
+});
+
+// Activar música al primer click/tap en cualquier parte de la página
+document.addEventListener('click', () => {
+  if (!musicActivated && !isPlaying) {
+    activateMusic();
+  }
+}, { once: true, passive: true });
+
+// También al primer touch (móviles)
+document.addEventListener('touchstart', () => {
+  if (!musicActivated && !isPlaying) {
+    activateMusic();
+  }
+}, { once: true, passive: true });
+
+// Control manual de música (botón)
+musicControl.addEventListener('click', () => {
+  if (isPlaying) {
+    backgroundMusic.pause();
+    musicControl.classList.remove('playing');
+    playIcon.style.display = 'block';
+    pauseIcon.style.display = 'none';
+    musicControl.title = 'Reproducir música';
+    localStorage.setItem('herrera_music', 'paused');
+    isPlaying = false;
+  } else {
+    backgroundMusic.play()
+      .then(() => {
+        isPlaying = true;
+        musicActivated = true;
+        musicControl.classList.add('playing');
+        playIcon.style.display = 'none';
+        pauseIcon.style.display = 'block';
+        musicControl.title = 'Pausar música';
+        localStorage.setItem('herrera_music', 'playing');
+      })
+      .catch(err => {
+        console.log('No se pudo reproducir:', err);
+      });
+  }
+});
+
+// ═══════════════════════════════════════════════════════════════════════
+// COMPARISON SLIDER ÉLITE (teclado + doble click + accesibilidad)
+// ═══════════════════════════════════════════════════════════════════════
+document.querySelectorAll('[data-comparison]').forEach(container => {
+  const slider = container.querySelector('.comparison-slider');
+  const afterImage = container.querySelector('.comparison-image.after');
+  let isDragging = false;
+  let current = 50;
+  
+  function setTo(p) {
+    current = Math.max(0, Math.min(100, p));
+    slider.style.left = current + '%';
+    afterImage.style.clipPath = `inset(0 ${100 - current}% 0 0)`;
+    slider.setAttribute('aria-valuenow', String(Math.round(current)));
+  }
+  
+  function updateFromEvent(e) {
+    const rect = container.getBoundingClientRect();
+    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+    const x = clientX - rect.left;
+    setTo((x / rect.width) * 100);
+  }
+  
+  function startDrag(e) {
+    isDragging = true;
+    updateFromEvent(e);
+  }
+  
+  function stopDrag() {
+    isDragging = false;
+  }
+  
+  function onDrag(e) {
+    if (isDragging) {
+      e.preventDefault();
+      updateFromEvent(e);
+    }
+  }
+  
+  
+  // Init
+  setTo(50);
+
+  // Mouse/touch
+  slider.addEventListener('mousedown', startDrag);
+  document.addEventListener('mouseup', stopDrag);
+  document.addEventListener('mousemove', onDrag);
+
+  slider.addEventListener('touchstart', startDrag, { passive: false });
+  document.addEventListener('touchend', stopDrag);
+  document.addEventListener('touchmove', onDrag, { passive: false });
+
+  // Click/tap reposition
+  container.addEventListener('click', (e) => {
+    if (e.target !== slider && !slider.contains(e.target)) updateFromEvent(e);
+  });
+
+  // Double click/tap to reset
+  container.addEventListener('dblclick', () => setTo(50));
+
+  // Keyboard accessibility
+  slider.tabIndex = 0;
+  slider.setAttribute('role', 'slider');
+  slider.setAttribute('aria-label', 'Comparador antes y después');
+  slider.setAttribute('aria-valuemin', '0');
+  slider.setAttribute('aria-valuemax', '100');
+  slider.setAttribute('aria-valuenow', '50');
+
+  slider.addEventListener('keydown', (e) => {
+    const step = e.shiftKey ? 10 : 2;
+    if (e.key === 'ArrowLeft') {
+      setTo(current - step);
+      e.preventDefault();
+    }
+    if (e.key === 'ArrowRight') {
+      setTo(current + step);
+      e.preventDefault();
+    }
+  });
+});
+
+// ═══════════════════════════════════════════════════════════════════════
+// MODAL VER EN GRANDE
+// ═══════════════════════════════════════════════════════════════════════
+
+function openModal(btn) {
+  const card = btn.closest('.photo-card');
+  const beforeImg = card.querySelector('.comparison-image.before');
+  const modal = document.getElementById('imageModal');
+  const modalImg = document.getElementById('modalImage');
+  const modalYear = document.getElementById('modalYear');
+  const modalTitle = document.getElementById('modalTitle');
+  const modalDesc = document.getElementById('modalDesc');
+
+  modalImg.src = beforeImg.src;
+  modalImg.alt = beforeImg.alt;
+  modalYear.textContent = beforeImg.dataset.year;
+  modalTitle.textContent = beforeImg.dataset.title;
+  modalDesc.textContent = beforeImg.dataset.desc;
+
+  modal.classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+document.getElementById('modalClose').addEventListener('click', () => {
+  document.getElementById('imageModal').classList.remove('active');
+  document.body.style.overflow = '';
+});
+
+document.getElementById('imageModal').addEventListener('click', (e) => {
+  if (e.target.id === 'imageModal') {
+    document.getElementById('imageModal').classList.remove('active');
+    document.body.style.overflow = '';
+  }
+});
+
+// ESC para cerrar
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    document.getElementById('imageModal').classList.remove('active');
+    document.body.style.overflow = '';
+  }
+});
+
+// ═══════════════════════════════════════════════════════════════════════
+// COMPARTIR FOTO
+// ═══════════════════════════════════════════════════════════════════════
+
+function sharePhoto(btn) {
+  const card = btn.closest('.photo-card');
+  const title = card.querySelector('.photo-title').textContent;
+  const url = window.location.href;
+
+  if (navigator.share) {
+    navigator.share({
+      title: `Herrera: ${title}`,
+      text: `Mira esta foto de Herrera: ${title}`,
+      url: url
+    }).catch(() => {});
+  } else {
+    // Fallback: copiar al portapapeles
+    navigator.clipboard.writeText(url).then(() => {
+      alert('Enlace copiado al portapapeles');
+    });
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+// FORMULARIO CORRECCIONES
+// ═══════════════════════════════════════════════════════════════════════
+
+function toggleCorrection(btn) {
+  const card = btn.closest('.photo-card');
+  const form = card.querySelector('.correction-form');
+  form.classList.toggle('active');
+}
+
+function submitCorrection(e, form) {
+  e.preventDefault();
+  
+  const card = form.closest('.photo-card');
+  const title = card.querySelector('.photo-title').textContent;
+  const name = form.querySelector('input').value || 'Anónimo';
+  const comment = form.querySelector('textarea').value;
+
+  // Aquí enviarías a tu servidor
+  console.log('Corrección enviada:', {
+    foto: title,
+    nombre: name,
+    comentario: comment
+  });
+
+  alert('¡Gracias por tu aportación! La revisaremos pronto.');
+  form.reset();
+  form.closest('.correction-form').classList.remove('active');
+
+  return false;
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+// SMOOTH SCROLL
+// ═══════════════════════════════════════════════════════════════════════
+
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  anchor.addEventListener('click', function (e) {
+    e.preventDefault();
+    const target = document.querySelector(this.getAttribute('href'));
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+});
+</script>
+
+</body>
+</html>
